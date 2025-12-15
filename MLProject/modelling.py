@@ -1,10 +1,10 @@
+import mlflow
 import argparse
 import pandas as pd
-from sklearn.model_selection import train_test_split
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
-import mlflow
 import mlflow.sklearn
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--test_size", type=float, default=0.2)
@@ -13,7 +13,7 @@ args = parser.parse_args()
 
 data = pd.read_csv("namadataset_preprocessing/StudentsPerformance_preprocessed.csv")
 
-data["average_score"] = data[["math score", "reading score", "writing score"]].mean(axis=1)
+data["average_score"] = data[["reading score", "writing score", "math score"]].mean(axis=1)
 threshold = data["average_score"].mean()
 data["performance"] = data["average_score"].apply(lambda x: 1 if x >= threshold else 0)
 
