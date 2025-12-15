@@ -1,0 +1,13 @@
+name: students_env
+channels:
+  - defaults
+dependencies:
+  - python=3.10
+  - pip
+  - mlflow
+  - pandas
+  - seaborn
+  - matplotlib
+  - scikit-learn
+  - pip:
+      - mlflow
