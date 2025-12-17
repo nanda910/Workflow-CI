@@ -26,13 +26,7 @@ jobs:
         run: |
           conda info
           conda list
-
-      - name: Configure Git safe directory
-        shell: bash -l {0}
-        run: |
-          git config --global --add safe.directory /__w/Workflow-CI/Workflow-CI
-          git config --global user.email "dewangga@example.com"
-          git config --global user.name "dewangga"
+          mlflow --version
 
       - name: Run model training with MLflow
         shell: bash -l {0}
@@ -40,6 +34,7 @@ jobs:
           mlflow run MLProject
 
       - name: Upload MLflow artifacts
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: mlflow-artifacts
