@@ -30,7 +30,12 @@ jobs:
 
       - name: Run model training with MLflow
         shell: bash -l {0}
-        run: mlflow run MLProject
+        run: |
+          mlflow run MLProject \
+            -P test_size=0.2 \
+            -P random_state=42 \
+            --backend local \
+            --artifacts-destination mlruns
 
       - name: Upload MLflow artifacts
         if: always()
