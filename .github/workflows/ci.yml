@@ -37,7 +37,13 @@ jobs:
             --backend local \
             --artifacts-destination mlruns
 
-      - name: List mlruns folder (debug)
+      - name: Debug working directory
+        run: pwd
+
+      - name: Debug MLProject content
+        run: ls -R MLProject
+
+      - name: List mlruns folder
         run: ls -R mlruns || echo "mlruns folder not found"
 
       - name: Upload MLflow artifacts
