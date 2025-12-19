@@ -13,9 +13,14 @@ args = parser.parse_args()
 
 data = pd.read_csv("../namadataset_preprocessing/StudentsPerformance_preprocessed.csv")
 
-data["average_score"] = data[["reading score", "writing score", "math score"]].mean(axis=1)
+data["average_score"] = data[
+    ["reading score", "writing score", "math score"]
+].mean(axis=1)
+
 threshold = data["average_score"].mean()
-data["performance"] = data["average_score"].apply(lambda x: 1 if x >= threshold else 0)
+data["performance"] = data["average_score"].apply(
+    lambda x: 1 if x >= threshold else 0
+)
 
 X = data.drop(columns=["performance", "average_score"])
 y = data["performance"]
@@ -28,28 +33,24 @@ X_train, X_test, y_train, y_test = train_test_split(
     stratify=y
 )
 
-mlflow.set_experiment("Eksperimen_SML_Modelling_Basic")
+mlflow.sklearn.autolog()
 
-with mlflow.start_run():
+model = RandomForestClassifier(random_state=args.random_state)
+model.fit(X_train, y_train)
 
-    mlflow.sklearn.autolog()
+y_pred = model.predict(X_test)
 
-    model = RandomForestClassifier(random_state=args.random_state)
-    model.fit(X_train, y_train)
+acc = accuracy_score(y_test, y_pred)
+prec = precision_score(y_test, y_pred)
+rec = recall_score(y_test, y_pred)
+f1 = f1_score(y_test, y_pred)
 
-    y_pred = model.predict(X_test)
+mlflow.log_metric("accuracy_manual", acc)
+mlflow.log_metric("precision_manual", prec)
+mlflow.log_metric("recall_manual", rec)
+mlflow.log_metric("f1_score_manual", f1)
 
-    acc = accuracy_score(y_test, y_pred)
-    prec = precision_score(y_test, y_pred)
-    rec = recall_score(y_test, y_pred)
-    f1 = f1_score(y_test, y_pred)
-
-    mlflow.log_metric("accuracy_manual", acc)
-    mlflow.log_metric("precision_manual", prec)
-    mlflow.log_metric("recall_manual", rec)
-    mlflow.log_metric("f1_score_manual", f1)
-
-    print("Accuracy:", acc)
-    print("Precision:", prec)
-    print("Recall:", rec)
-    print("F1 Score:", f1)
+print("Accuracy:", acc)
+print("Precision:", prec)
+print("Recall:", rec)
+print("F1 Score:", f1)
