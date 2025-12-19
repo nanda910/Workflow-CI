@@ -28,9 +28,13 @@ jobs:
           conda list
           mlflow --version
 
+      - name: Ensure MLflow artifact folder exists
+        run: mkdir -p MLProject/mlruns
+
       - name: Run model training with MLflow
         shell: bash -l {0}
         run: |
+          export MLFLOW_TRACKING_URI=MLProject/mlruns
           mlflow run MLProject
 
       - name: Upload MLflow artifacts
@@ -38,4 +42,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: mlflow-artifacts
-          path: MLProject/mlruns
+          path: MLProject/mlruns/**
