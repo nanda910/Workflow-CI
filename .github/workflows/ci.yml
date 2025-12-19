@@ -11,10 +11,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up Miniconda
+     - name: Set up Miniconda
         uses: conda-incubator/setup-miniconda@v3
         with:
           activate-environment: mlflow-env
@@ -28,17 +29,13 @@ jobs:
           conda list
           mlflow --version
 
-      - name: Run model training via Python
+      - name: Run model training with MLflow
         shell: bash -l {0}
-        run: |
-          cd MLProject
-          mkdir -p mlruns
-          export MLFLOW_TRACKING_URI=mlruns
-          python modelling.py --test_size 0.2 --random_state 42
+        run: mlflow run MLProject
 
       - name: Upload MLflow artifacts
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: mlflow-artifacts
-          path: MLProject/mlruns/**
+          path: mlruns/**
