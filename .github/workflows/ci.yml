@@ -31,19 +31,9 @@ jobs:
       - name: Run model training with MLflow
         shell: bash -l {0}
         run: |
-          mlflow run MLProject \
-            -P test_size=0.2 \
-            -P random_state=42 \
-            --backend local \
-            --artifacts-destination mlruns
+          mlflow run MLProject --backend local
 
-      - name: Debug working directory
-        run: pwd
-
-      - name: Debug MLProject content
-        run: ls -R MLProject
-
-      - name: List mlruns folder
+      - name: Debug mlruns folder
         run: ls -R mlruns || echo "mlruns folder not found"
 
       - name: Upload MLflow artifacts
