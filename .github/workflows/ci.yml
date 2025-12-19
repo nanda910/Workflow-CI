@@ -11,11 +11,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-
       - name: Checkout repository
         uses: actions/checkout@v4
 
-     - name: Set up Miniconda
+      - name: Set up Miniconda environment
         uses: conda-incubator/setup-miniconda@v3
         with:
           activate-environment: mlflow-env
