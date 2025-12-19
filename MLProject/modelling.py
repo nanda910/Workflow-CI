@@ -11,7 +11,7 @@ parser.add_argument("--test_size", type=float, default=0.2)
 parser.add_argument("--random_state", type=int, default=42)
 args = parser.parse_args()
 
-data = pd.read_csv("namadataset_preprocessing/StudentsPerformance_preprocessed.csv")
+data = pd.read_csv("../namadataset_preprocessing/StudentsPerformance_preprocessed.csv")
 
 data["average_score"] = data[["reading score", "writing score", "math score"]].mean(axis=1)
 threshold = data["average_score"].mean()
