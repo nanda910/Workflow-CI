@@ -30,12 +30,17 @@ jobs:
 
       - name: Run model training with MLflow
         shell: bash -l {0}
+        env:
+          MLFLOW_TRACKING_URI: file:./mlruns
         run: |
           mlflow run MLProject --backend local
+
+      - name: List mlruns folder
+        run: ls -R mlruns
 
       - name: Upload MLflow artifacts
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: mlflow-artifacts
-          path: MLProject/mlruns/**
+          path: mlruns/**
