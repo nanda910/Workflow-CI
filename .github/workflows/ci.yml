@@ -33,12 +33,9 @@ jobs:
         run: |
           mlflow run MLProject --backend local
 
-      - name: Debug mlruns folder
-        run: ls -R mlruns || echo "mlruns folder not found"
-
       - name: Upload MLflow artifacts
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: mlflow-artifacts
-          path: mlruns/**
+          path: MLProject/mlruns/**
